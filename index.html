@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hiden Cup 3 – Player Guessing</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+
+        .list-item {
+            border: 1px dotted #eee;
+            margin: 20px 0;
+            height: 40px;
+            font-size: 15px;
+            font-weight: 700;
+            list-style-type: none;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .list-item span {
+            padding: 0 10px;
+            background: #f2dede;
+            display: block;
+            width: 100%;
+            height: 40px;
+            z-index: 3;
+        }
+
+        #hero-area .list-item {
+            display: block;
+            width: 100%;
+            background-color: #d9edf7;
+        }
+
+        img {
+            padding-bottom: 6px;
+        }
+
+        .right .list-item,
+        .right .list-item.highlight.ui-droppable-disabled {
+            height: 40px;
+            background: #fff;
+            cursor: inherit;
+            border: 1px dotted #ccc;
+        }
+
+        .right .list-item.dropped {
+            border: 0;
+        }
+
+        .right .list-item.highlight {
+            border: 1px dotted #3db2db;
+        }
+
+        .right .list-item span {
+            background: #d9edf7;
+            color: #337ab7;
+            height: 40px;
+            z-index: 2;
+        }
+
+        #hero-area .list-item,
+        #drop-area .list-item span {
+            border: 2px solid #3db2db;
+        }
+
+    </style>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/jquery.ui.touch-punch.js"></script>
+    <script>
+        const heroes = [
+            "Charlemagne",
+            "King Sancho",
+            "Joan The Maid",
+            "Bad Neighbor",
+            "Leif Erikson",
+            "Princess Yodit",
+            "Kotyan Khan",
+            "Sheriff of Nottingham",
+            "Saladin",
+            "Friar Tuck",
+            "Alaric The Goth",
+            "Vlad Dracula",
+            "Henry The Lion",
+            "William The Conqueror",
+            "Charles Martel",
+            "Emperor in a Barrel",
+        ];
+        const players = [
+            "Hera",
+            "Liereyy",
+            "MbL",
+            "TaToH",
+            "TheMax",
+            "TheViper",
+            "Vivi",
+            "Yo",
+            "ACCM",
+            "Antagonist",
+            "BacT",
+            "DauT",
+            "dogao",
+            "F1Re",
+            "Nicov",
+            "Villese",
+        ];
+        $(function () {
+
+            let droppableParent;
+
+            for (let hero of heroes) {
+                const hero_filename = hero.replace(/ /g,'_');
+                $('#hero-area').append(`<li class="list-item"><img src="img/${hero_filename}.png" alt="${hero}"/> ${hero}</li>`);
+                $('#drop-area').append(`<li class="list-item droppable"></li>`);
+            }
+            for (let player of players) {
+                $('#player-area').append(`<li class="list-item"><span class="draggable"><img src="img/${player}.png" alt="${player}"/>&nbsp;${player}</span></li>`);
+            }
+
+            $('ul .draggable').draggable({
+                revert: 'invalid',
+                revertDuration: 200,
+                start: function () {
+                    droppableParent = $(this).parent();
+                    $(this).addClass('being-dragged');
+                },
+                stop: function () {
+                    $(this).removeClass('being-dragged');
+                }
+            });
+
+            $('ul#drop-area li').droppable({
+                hoverClass: 'highlight',
+                drop: function (event, ui) {
+                    var draggable = $(ui.draggable[0]),
+                        draggableOffset = draggable.offset(),
+                        container = $(event.target),
+                        containerOffset = container.offset();
+
+                    $('.draggable', event.target).appendTo(droppableParent).css({opacity: 0}).animate({opacity: 1}, 200);
+
+                    draggable.appendTo(container).css({
+                        left: draggableOffset.left - containerOffset.left,
+                        top: draggableOffset.top - containerOffset.top
+                    }).animate({left: 0, top: 0}, 200);
+                }
+            });
+        });
+
+        const submit = () => {
+            const players = [];
+            $('#drop-area li span img').each((index, value) => {
+                players.push(value.alt);
+            });
+            if (players.length !== heroes.length) {
+                alert("Please assign all players to a hero!");
+                return;
+            }
+            const result = {};
+            for (let i = 0; i < heroes.length; i++) {
+                const hero = heroes[i];
+                result[hero] = players[i];
+            }
+            console.log(result);
+            alert('Looks good!');
+        };
+
+    </script>
+</head>
+<body>
+<div class="container">
+    <h2 class="text-center">Hidden Cup 3</h2>
+    <h3 class="text-center">Player Guessing</h3>
+    <div class="row">
+        <div class="col-xs-4">
+            <h3 class="text-center">Heroes</h3>
+            <ul id='hero-area' class="list-unstyled">
+            </ul>
+        </div>
+        <div class="col-xs-4 right">
+            <h3 class="text-center">Players</h3>
+            <ul id='drop-area' class="list-unstyled">
+            </ul>
+        </div>
+        <div class="col-xs-4">
+            <h3 class="text-center">&nbsp;</h3>
+            <ul class="list-unstyled" id="player-area">
+            </ul>
+        </div>
+    </div>
+    <button class="btn btn-primary btn-block btn-lg pb-5" onclick="submit()">Submit</button>
+</div>
+</body>
+</html>
