@@ -5,11 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Hiden Cup 3 – Player Guessing</title>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="css/jquery-ui.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
+
+        body {
+            background-image: url("img/background.png");
+            color: white;
+        }
 
         .list-item {
             border: 1px dotted #eee;
@@ -22,6 +27,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            color: #333;
         }
 
         .list-item span {
@@ -46,9 +52,9 @@
         .right .list-item,
         .right .list-item.highlight.ui-droppable-disabled {
             height: 40px;
-            background: #fff;
             cursor: inherit;
-            border: 1px dotted #ccc;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.3);
         }
 
         .right .list-item.dropped {
@@ -71,132 +77,264 @@
             border: 2px solid #3db2db;
         }
 
+        .breadcrumb-item.active {
+            color: deepskyblue;
+        }
+
+        .hidden {
+            display: none;
+        }
+
     </style>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="js/jquery.ui.touch-punch.js"></script>
-    <script>
-        const heroes = [
-            "Charlemagne",
-            "King Sancho",
-            "Joan The Maid",
-            "Bad Neighbor",
-            "Leif Erikson",
-            "Princess Yodit",
-            "Kotyan Khan",
-            "Sheriff of Nottingham",
-            "Saladin",
-            "Friar Tuck",
-            "Alaric The Goth",
-            "Vlad Dracula",
-            "Henry The Lion",
-            "William The Conqueror",
-            "Charles Martel",
-            "Emperor in a Barrel",
-        ];
-        const players = [
-            "Hera",
-            "Liereyy",
-            "MbL",
-            "TaToH",
-            "TheMax",
-            "TheViper",
-            "Vivi",
-            "Yo",
-            "ACCM",
-            "Antagonist",
-            "BacT",
-            "DauT",
-            "dogao",
-            "F1Re",
-            "Nicov",
-            "Villese",
-        ];
-        $(function () {
-
-            let droppableParent;
-
-            for (let hero of heroes) {
-                const hero_filename = hero.replace(/ /g,'_');
-                $('#hero-area').append(`<li class="list-item"><img src="img/${hero_filename}.png" alt="${hero}"/> ${hero}</li>`);
-                $('#drop-area').append(`<li class="list-item droppable"></li>`);
-            }
-            for (let player of players) {
-                $('#player-area').append(`<li class="list-item"><span class="draggable"><img src="img/${player}.png" alt="${player}"/>&nbsp;${player}</span></li>`);
-            }
-
-            $('ul .draggable').draggable({
-                revert: 'invalid',
-                revertDuration: 200,
-                start: function () {
-                    droppableParent = $(this).parent();
-                    $(this).addClass('being-dragged');
-                },
-                stop: function () {
-                    $(this).removeClass('being-dragged');
-                }
-            });
-
-            $('ul#drop-area li').droppable({
-                hoverClass: 'highlight',
-                drop: function (event, ui) {
-                    var draggable = $(ui.draggable[0]),
-                        draggableOffset = draggable.offset(),
-                        container = $(event.target),
-                        containerOffset = container.offset();
-
-                    $('.draggable', event.target).appendTo(droppableParent).css({opacity: 0}).animate({opacity: 1}, 200);
-
-                    draggable.appendTo(container).css({
-                        left: draggableOffset.left - containerOffset.left,
-                        top: draggableOffset.top - containerOffset.top
-                    }).animate({left: 0, top: 0}, 200);
-                }
-            });
-        });
-
-        const submit = () => {
-            const players = [];
-            $('#drop-area li span img').each((index, value) => {
-                players.push(value.alt);
-            });
-            if (players.length !== heroes.length) {
-                alert("Please assign all players to a hero!");
-                return;
-            }
-            const result = {};
-            for (let i = 0; i < heroes.length; i++) {
-                const hero = heroes[i];
-                result[hero] = players[i];
-            }
-            console.log(result);
-            alert('Looks good!');
-        };
-
-    </script>
 </head>
 <body>
 <div class="container">
-    <h2 class="text-center">Hidden Cup 3</h2>
-    <h3 class="text-center">Player Guessing</h3>
-    <div class="row">
-        <div class="col-xs-4">
-            <h3 class="text-center">Heroes</h3>
-            <ul id='hero-area' class="list-unstyled">
-            </ul>
-        </div>
-        <div class="col-xs-4 right">
-            <h3 class="text-center">Players</h3>
-            <ul id='drop-area' class="list-unstyled">
-            </ul>
-        </div>
-        <div class="col-xs-4">
-            <h3 class="text-center">&nbsp;</h3>
-            <ul class="list-unstyled" id="player-area">
-            </ul>
-        </div>
+    <div id="step-1">
+        <p class="text-center"><img src="img/logo.png" alt="Hidden Cup 3 logo"/></p>
+        <p>Welcome to the Hidden Cup 3 Player guessing competition!</p>
+        <p>Here you can guess which hero was played by which participant. The persons with most correct guesses win!</p>
+        <p>In order to determine the winners and contact them, we store your contact information and your answers. By
+            participating in this guessing competition you consent with us storing this data. We will delete this data
+            once all winners have been contacted or 2 months after submission, whichever is earlier.</p>
+        <p class="text-center">
+            <button class="btn btn-secondary btn-lg mb-5" onclick="step2()">I understand that. Next!</button>
+        </p>
     </div>
-    <button class="btn btn-primary btn-block btn-lg pb-5" onclick="submit()">Submit</button>
+
+    <div id="step-2" class="hidden">
+        <p class="mt-5">Please assign each <b>Player</b> from the right to a <b>Hero</b> on the left by dragging the <b>Player</b>
+            onto the spot next to the <b>Hero</b>.</p>
+        <p>Once you are done, click the <i>Confirm and Next</i> button at the bottom.</p>
+        <div class="row">
+            <div class="col-4">
+                <h3 class="text-center">Heroes</h3>
+                <ul id='hero-area' class="list-unstyled">
+                </ul>
+            </div>
+            <div class="col-4 right">
+                <h3 class="text-center">Players</h3>
+                <ul id='drop-area' class="list-unstyled">
+                </ul>
+            </div>
+            <div class="col-4">
+                <h3 class="text-center">↓ <i>Drag these</i> ↓</h3>
+                <ul class="list-unstyled" id="player-area">
+                </ul>
+            </div>
+        </div>
+        <p class="text-center">
+            <button class="btn btn-primary btn-lg mb-5" onclick="step3()">Confirm and Next</button>
+        </p>
+    </div>
+
+    <div id="step-3" class="hidden">
+        <p class="mt-5">In order to contact you in case you won, we need your contact information.</p>
+        <p>Please provide your email address or your Twitch username, or both – the more, the better we can
+            reach you.</p>
+
+        <div class="form-group">
+            <label for="inputEmail">Email address</label>
+            <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="inputTwitch">Twitch username</label>
+            <input type="text" class="form-control" id="inputTwitch" aria-describedby="twitchHelp">
+            <small id="twitchHelp" class="form-text text-muted">The username you use on Twitch</small>
+        </div>
+
+        <p class="text-center">
+            <button class="btn btn-secondary btn-lg mb-5" onclick="step2()">Go back</button>
+            <button class="btn btn-primary btn-lg mb-5" onclick="submit()">Submit Guess</button>
+        </p>
+    </div>
+    <div id="step-4" class="hidden">
+        <p id="response" class="lead text-center mt-5"></p>
+    </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="js/jquery.ui.touch-punch.js"></script>
+<script>
+    const heroes = [
+        "Charlemagne",
+        "King Sancho",
+        "Joan The Maid",
+        "Bad Neighbor",
+        "Leif Erikson",
+        "Princess Yodit",
+        "Kotyan Khan",
+        "Sheriff of Nottingham",
+        "Saladin",
+        "Friar Tuck",
+        "Alaric The Goth",
+        "Vlad Dracula",
+        "Henry The Lion",
+        "William The Conqueror",
+        "Charles Martel",
+        "Emperor in a Barrel",
+    ];
+    const players = [
+        "Hera",
+        "Liereyy",
+        "MbL",
+        "TaToH",
+        "TheMax",
+        "TheViper",
+        "Vivi",
+        "Yo",
+        "ACCM",
+        "Antagonist",
+        "BacT",
+        "DauT",
+        "dogao",
+        "F1Re",
+        "Nicov",
+        "Villese",
+    ];
+
+    async function postData(data = {}) {
+        // Default options are marked with *
+        const response = await fetch('https://hc3.aoe2.se/competition/guess.php', {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *client
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        });
+        return await response.json(); // parses JSON response into native JavaScript objects
+    }
+
+    $(function () {
+
+        let droppableParent;
+
+        for (let hero of heroes) {
+            const hero_filename = hero.replace(/ /g, '_');
+            $('#hero-area').append(`<li class="list-item"><img src="img/${hero_filename}.png" alt="${hero}"/> ${hero}</li>`);
+            $('#drop-area').append(`<li class="list-item droppable"></li>`);
+        }
+        for (let player of players) {
+            $('#player-area').append(`<li class="list-item"><span class="draggable"><img src="img/${player}.png" alt="${player}"/>&nbsp;${player}</span></li>`);
+        }
+
+        $('ul .draggable').draggable({
+            revert: 'invalid',
+            revertDuration: 200,
+            start: function () {
+                droppableParent = $(this).parent();
+                $(this).addClass('being-dragged');
+            },
+            stop: function () {
+                $(this).removeClass('being-dragged');
+            }
+        });
+
+        $('ul#drop-area li').droppable({
+            hoverClass: 'highlight',
+            drop: function (event, ui) {
+                const draggable = $(ui.draggable[0]),
+                    draggableOffset = draggable.offset(),
+                    container = $(event.target),
+                    containerOffset = container.offset();
+
+                $('.draggable', event.target).appendTo(droppableParent).css({opacity: 0}).animate({opacity: 1}, 200);
+
+                draggable.appendTo(container).css({
+                    left: draggableOffset.left - containerOffset.left,
+                    top: draggableOffset.top - containerOffset.top
+                }).animate({left: 0, top: 0}, 200);
+            }
+        });
+    });
+
+    function collectPlayersInOrder() {
+        const players = [];
+        $('#drop-area li span img').each((index, value) => {
+            players.push(value.alt);
+        });
+        return players;
+    }
+
+    const submit = () => {
+        const players = collectPlayersInOrder();
+        if (players.length !== heroes.length) {
+            alert("Please assign all players to a hero!");
+            return;
+        }
+        const result = {};
+        for (let i = 0; i < heroes.length; i++) {
+            const hero = heroes[i];
+            result[hero] = players[i];
+        }
+        console.log(result);
+
+        const emailAddress = $('#inputEmail').val();
+        const twitchUsername = $('#inputTwitch').val();
+
+        if (emailAddress === '' && twitchUsername === '') {
+            alert('Please provide at least your email address or your Twitch username!');
+            return;
+        }
+
+        if (!emailAddress.includes('@')) {
+            alert('That does not look like a valid email address. Check for typos or try another one.');
+            return;
+        }
+
+        postData({emailAddress, twitchUsername, guess: result})
+            .then((data) => {
+                console.log(data);
+                if (data.success) {
+                    $('#response').html(data.message);
+                    step4();
+                } else {
+                    alert(data.message);
+                }
+            });
+    };
+
+    const validatePlayers = () => {
+        const players = collectPlayersInOrder();
+        if (players.length !== heroes.length) {
+            alert("Please assign all players to a hero!");
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    const step2 = () => {
+        $('#step-1').addClass('hidden');
+        $('#step-3').addClass('hidden');
+        $('#step-4').addClass('hidden');
+        $('#step-2').removeClass('hidden');
+    };
+
+    const step3 = () => {
+        if (validatePlayers()) {
+            $('#step-1').addClass('hidden');
+            $('#step-2').addClass('hidden');
+            $('#step-4').addClass('hidden');
+            $('#step-3').removeClass('hidden');
+        }
+    };
+
+    const step4 = () => {
+        $('#step-1').addClass('hidden');
+        $('#step-2').addClass('hidden');
+        $('#step-3').addClass('hidden');
+        $('#step-4').removeClass('hidden');
+    };
+
+</script>
 </body>
 </html>
