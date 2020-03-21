@@ -31,7 +31,7 @@
         }
 
         .list-item span {
-            padding: 0 10px;
+            padding: 2px 10px 0 10px;
             background: #f2dede;
             display: block;
             width: 100%;
@@ -45,8 +45,8 @@
             background-color: #d9edf7;
         }
 
-        img {
-            padding-bottom: 6px;
+        #hero-area .list-item {
+            padding: 2px 10px 0 10px;
         }
 
         .right .list-item,
@@ -83,6 +83,10 @@
 
         .hidden {
             display: none;
+        }
+
+        small a {
+            color: unset;
         }
 
     </style>
@@ -125,6 +129,8 @@
         <p class="text-center">
             <button class="btn btn-primary btn-lg mb-5" onclick="step3()">Confirm and Next</button>
         </p>
+        <p class="text-muted text-right"><small>Flag icons made by <a href="https://www.flaticon.com/authors/freepik" rel="nofollow">Freepik</a> from
+            <a href="http://www.flaticon.com/" rel="nofollow">www.flaticon.com</a></small></p>
     </div>
 
     <div id="step-3" class="hidden">
@@ -150,6 +156,7 @@
         </p>
     </div>
     <div id="step-4" class="hidden">
+        <p class="text-center"><img src="img/logo.png" alt="Hidden Cup 3 logo"/></p>
         <p id="response" class="lead text-center mt-5"></p>
     </div>
 </div>
