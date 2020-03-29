@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hidden Cup 3 – Player Guessing Results</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+
+        body {
+            background-image: url("../img/background.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: white;
+        }
+
+        .incorrect {
+            text-align: center;
+            color: #dad55e;
+            font-weight: bold;
+        }
+
+        .correct {
+            text-align: center;
+            color: #3A7734;
+            font-weight: bold;
+        }
+
+        .hero, .player {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .list-group-item {
+            background-color: rgba(50, 50, 50, 0.5);
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div>
+        <p class="text-center"><img src="../img/logo.png" alt="Hidden Cup 3 logo"/></p>
+        <p>Welcome to the Hidden Cup 3 Player guessing competition results!</p>
+        <p>Enter your Twitch username <i>or</i> your email adress into the input below and hit the button to find out
+            how you did!</p>
+
+        <div class="input-group">
+            <input type="text" id="name" class="form-control" placeholder="Twitch username or email address"
+                   aria-label="Twitch username or email address" aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button" id="button-addon" onclick="check()">How did I do?</button>
+            </div>
+        </div>
+
+        <div id="result" class="mb-5 mt-3"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+    const correct = {
+        "Charlemagne": "Vivi",
+        "King Sancho": "Liereyy",
+        "Joan The Maid": "TaToH",
+        "Bad Neighbor": "Nicov",
+        "Leif Erikson": "F1Re",
+        "Princess Yodit": "DauT",
+        "Kotyan Khan": "Hera",
+        "Sheriff of Nottingham": "Antagonist",
+        "Saladin": "TheViper",
+        "Friar Tuck": "ACCM",
+        "Alaric The Goth": "Yo",
+        "Vlad Dracula": "Villese",
+        "Henry The Lion": "BacT",
+        "William The Conqueror": "MbL",
+        "Charles Martel": "TheMax",
+        "Emperor in a Barrel": "dogao",
+    };
+
+    async function digestMessage(message) {
+        const msgUint8 = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function getData(name) {
+        const digest = await digestMessage(name.toLowerCase());
+        console.log(digest);
+        const response = await fetch('https://hc3.aoe2.se/competition/guesses.php?id=' + digest);
+        return await response.json();
+    }
+
+    function createResultsTable(data) {
+        const resultDiv = document.getElementById('result');
+
+        if (data == '404') {
+            resultDiv.innerHTML = '<div class="alert alert-info" role="alert">We could not find your guess. Maybe you have a typo?</div>';
+            return;
+        }
+
+        let details = '<ul class="list-group">';
+        let correctGuesses = 0;
+        for (let hero in correct) {
+            let adjective = 'incorrectly';
+            let clazz = 'incorrect';
+            if (data[hero] === correct[hero]) {
+                adjective = 'correctly';
+                clazz = 'correct';
+                correctGuesses++;
+            }
+            details += `<li class="list-group-item">You <span class="${clazz}">${adjective}</span> guessed that
+                        <span class="hero">${hero}</span> was <span class="player">${data[hero]}</span></li>`;
+        }
+
+        details += '</ul>';
+
+        details = `<div class="alert alert-dark" role="alert">
+                    Looks like you guessed <b>${correctGuesses} / 16</b> correctly!
+                   </div>` + details;
+
+        resultDiv.innerHTML = details;
+    }
+
+    const check = () => {
+        const name = document.getElementById('name').value;
+
+        if (name === '') {
+            alert('Please enter your email address or your Twitch username!');
+            return;
+        }
+
+        getData(name)
+            .then((data) => {
+                console.log(data);
+                createResultsTable(data);
+            });
+    };
+
+</script>
+</body>
+</html>
