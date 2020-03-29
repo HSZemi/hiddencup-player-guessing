@@ -107,15 +107,15 @@
         let details = '<ul class="list-group">';
         let correctGuesses = 0;
         for (let hero in correct) {
-            let adjective = 'incorrectly';
-            let clazz = 'incorrect';
             if (data[hero] === correct[hero]) {
-                adjective = 'correctly';
-                clazz = 'correct';
                 correctGuesses++;
-            }
-            details += `<li class="list-group-item">You <span class="${clazz}">${adjective}</span> guessed that
+                details += `<li class="list-group-item">You <span class="correct">correctly</span> guessed that
                         <span class="hero">${hero}</span> was <span class="player">${data[hero]}</span></li>`;
+            } else {
+                details += `<li class="list-group-item">You <span class="incorrect">incorrectly</span> guessed that
+                        <span class="hero">${hero}</span> was <span class="player">${data[hero]}</span>
+                        <i>(it actually was <span class="player">${correct[hero]}</span>)</i></li>`;
+            }
         }
 
         details += '</ul>';
