@@ -33,6 +33,10 @@
             justify-content: space-around;
         }
 
+        #player-area.hidden {
+            display: none;
+        }
+
         .hero-box {
             display: flex;
             flex-direction: column;
@@ -111,6 +115,56 @@
             cursor: grabbing;
         }
 
+        select {
+            width: 100%;
+        }
+
+        select {
+            display: block;
+            font-size: 16px;
+            font-family: sans-serif;
+            font-weight: 700;
+            color: #444;
+            line-height: 1.3;
+            padding: .6em 1.4em .5em .8em;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            margin: 0;
+            border: 1px solid #aaa;
+            box-shadow: 0 1px 0 1px rgba(0, 0, 0, .04);
+            border-radius: 2px;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: #fff;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'),
+            linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
+            background-repeat: no-repeat, repeat;
+            background-position: right .7em top 50%, 0 0;
+            background-size: .65em auto, 100%;
+        }
+
+        select::-ms-expand {
+            display: none;
+        }
+
+        select:hover {
+            border-color: #888;
+        }
+
+        select:focus {
+            border-color: #aaa;
+            box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+            box-shadow: 0 0 0 3px -moz-mac-focusring;
+            color: #222;
+            outline: none;
+        }
+
+        select option {
+            font-weight: normal;
+        }
+
     </style>
 </head>
 <body>
@@ -122,7 +176,8 @@
         <p>In order to determine the winners and contact them, we store your contact information and your answers. By
             participating in this guessing competition you consent with us storing this data. We will delete this data
             once all winners have been contacted or 2 months after submission, whichever is earlier.</p>
-        <p style="color: #ccc;">If you have special knowledge, that means if you are an admin for HC4 or a player in the top 16, you can
+        <p style="color: #ccc;">If you have special knowledge, that means if you are an admin for HC4 or a player in the
+            top 16, you can
             still participate, but you cannot win a prize.</p>
         <p class="text-center">
             <button class="btn btn-secondary btn-lg mb-5" onclick="step2()">I understand that. Next!</button>
@@ -130,19 +185,33 @@
     </div>
 
     <div id="step-2" class="hidden">
-        <p class="mt-5 text-center">Please assign each <b>Player</b> from the bottom to a <b>Hero</b> on the top by dragging the <b>Player</b>
-            onto the spot below the <b>Hero</b>.</p>
+        <p class="text-center"><img src="img/logo.png" alt="Hidden Cup 4 logo"/></p>
+        <p class="text-center">How do you want to assign players to heroes?</p>
+        <p class="text-center">
+            <button class="btn btn-secondary btn-lg btn-block mb-4" onclick="step3desktop()">Desktop Version (drag &amp; drop)</button>
+            <button class="btn btn-secondary btn-lg btn-block" onclick="step3mobile()">Mobile Version (select drop-down)</button>
+        </p>
+    </div>
+
+    <div id="step-3" class="hidden">
+        <p class="mt-5 text-center only-desktop">Please assign each <b>Player</b> from the bottom to a <b>Hero</b> on
+            the top by dragging the <b>Player</b> onto the spot below the <b>Hero</b>.</p>
+        <p class="mt-5 text-center only-mobile">Please assign a <b>Player</b> to each <b>Hero</b> by selecting a name
+            from
+            the selection menu below each hero.</p>
         <p class="text-center">Once you are done, click the <i>Confirm and Next</i> button at the bottom.</p>
 
         <div id="hero-area"></div>
         <div id="player-area"></div>
 
         <p class="text-center">
-            <button class="btn btn-primary btn-lg mb-5" onclick="step3()">Confirm and Next</button>
+            <button class="btn btn-secondary btn-lg mb-5" onclick="step2()">Back</button>
+            <button class="btn btn-secondary btn-lg mb-5" onclick="reset()">Reset</button>
+            <button class="btn btn-primary btn-lg mb-5" onclick="step4()">Confirm and Next</button>
         </p>
     </div>
 
-    <div id="step-3" class="hidden">
+    <div id="step-4" class="hidden">
         <p class="mt-5">In order to contact you in case you won, we need your contact information.</p>
         <p>Please provide your email address or your Twitch username, or both – the more, the better we can
             reach you.</p>
@@ -160,11 +229,11 @@
         </div>
 
         <p class="text-center">
-            <button class="btn btn-secondary btn-lg mb-5" onclick="step2()">Go back</button>
+            <button class="btn btn-secondary btn-lg mb-5" onclick="step3()">Go back</button>
             <button class="btn btn-primary btn-lg mb-5" onclick="submit()">Submit Guess</button>
         </p>
     </div>
-    <div id="step-4" class="hidden">
+    <div id="step-5" class="hidden">
         <p class="text-center"><img src="img/logo.png" alt="Hidden Cup 4 logo"/></p>
         <p id="response" class="lead text-center mt-5"></p>
     </div>
@@ -229,6 +298,15 @@
         return await response.json(); // parses JSON response into native JavaScript objects
     }
 
+    function getSelect() {
+        let select = '<select class="player-select"><option disabled selected value="none">Please select…</option>';
+        for (let player of players) {
+            select += `<option value="${player}">${player}</option>`;
+        }
+        select += '</select>';
+        return select;
+    }
+
     $(function () {
 
         let droppableParent;
@@ -244,11 +322,11 @@
 <span>${hero}</span>
 </div>
 </div>
-<div class="drop-target"></div>
+<div class="drop-target">${getSelect()}</div>
 </div>`);
         }
         for (let player of players) {
-            $('#player-area').append(`<div class="player-box">
+            $('#player-area').append(`<div class="player-box" data-original-player="${player}">
 <div class="wrapper player draggable" data-player-name="${player}">
 <div class="image">
 <img src="img/player/${player}.svg" alt="${player}"/>
@@ -288,6 +366,12 @@
                 }).animate({left: 0, top: 0}, 200);
             }
         });
+
+        $('select').change(function () {
+            const value = $(this).val();
+            $(`select option[value=${value}]`).attr('disabled', 'disabled');
+        });
+
     });
 
     function collectPlayersInOrder() {
@@ -295,6 +379,11 @@
         $('#hero-area .drop-target .player').each((index, value) => {
             players.push(value.dataset.playerName);
         });
+        if (players.length === 0) {
+            $('#hero-area .player-select').each((index, value) => {
+                players.push(value.value);
+            });
+        }
         return players;
     }
 
@@ -327,44 +416,105 @@
             .then((data) => {
                 if (data.success) {
                     $('#response').html(data.message);
-                    step4();
+                    step5();
                 } else {
                     alert(data.message);
                 }
             });
     };
 
+    const getDuplicates = (players) => {
+        const items = {};
+        for (let player of players) {
+            if (!items.hasOwnProperty(player)) {
+                items[player] = 0;
+            }
+            items[player]++;
+        }
+        const duplicates = [];
+        for (let player in items) {
+            if (items[player] > 1) {
+                duplicates.push(player);
+            }
+        }
+        return duplicates;
+    }
+
     const validatePlayers = () => {
         const players = collectPlayersInOrder();
+        const duplicates = getDuplicates(players);
         if (players.length !== heroes.length) {
             alert("Please assign all players to a hero!");
+            return false;
+        } else if (players.includes('none')) {
+            alert("Please assign a player to each hero!");
+            return false;
+        } else if (duplicates.length > 0) {
+            alert("Please do not assign players to multiple heroes!\nYou have assigned the following players multiple times:\n" + duplicates.join('\n'));
             return false;
         } else {
             return true;
         }
     };
 
+    const reset = () => {
+        $('select').val('none');
+        $('.player').each((index, value) => {
+            console.log(index, value);
+            const playerName = value.dataset.playerName;
+            $(value).appendTo(`*[data-original-player="${playerName}"]`);
+        });
+    }
+
     const step2 = () => {
+        reset();
         $('#step-1').addClass('hidden');
         $('#step-3').addClass('hidden');
         $('#step-4').addClass('hidden');
+        $('#step-5').addClass('hidden');
         $('#step-2').removeClass('hidden');
     };
 
+    const step3desktop = () => {
+        $('.player-select').addClass('hidden');
+        $('.only-mobile').addClass('hidden');
+        $('#player-area').removeClass('hidden');
+        $('.only-desktop').removeClass('hidden');
+        step3();
+    }
+
+    const step3mobile = () => {
+        $('.player-select').removeClass('hidden');
+        $('.only-mobile').removeClass('hidden');
+        $('#player-area').addClass('hidden');
+        $('.only-desktop').addClass('hidden');
+        step3();
+    }
+
     const step3 = () => {
-        if (validatePlayers()) {
-            $('#step-1').addClass('hidden');
-            $('#step-2').addClass('hidden');
-            $('#step-4').addClass('hidden');
-            $('#step-3').removeClass('hidden');
-        }
+        $('#step-1').addClass('hidden');
+        $('#step-2').addClass('hidden');
+        $('#step-4').addClass('hidden');
+        $('#step-5').addClass('hidden');
+        $('#step-3').removeClass('hidden');
     };
 
     const step4 = () => {
+        if (validatePlayers()) {
+            $('#step-1').addClass('hidden');
+            $('#step-2').addClass('hidden');
+            $('#step-3').addClass('hidden');
+            $('#step-5').addClass('hidden');
+            $('#step-4').removeClass('hidden');
+        }
+    };
+
+    const step5 = () => {
         $('#step-1').addClass('hidden');
         $('#step-2').addClass('hidden');
         $('#step-3').addClass('hidden');
-        $('#step-4').removeClass('hidden');
+        $('#step-4').addClass('hidden');
+        $('#step-5').removeClass('hidden');
     };
 
 </script>
