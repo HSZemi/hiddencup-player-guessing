@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hidden Cup 3 – Player Guessing Results</title>
+    <title>Hidden Cup 4 – Player Guessing Results</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -42,8 +42,8 @@
 <body>
 <div class="container">
     <div>
-        <p class="text-center"><img src="../img/logo.png" alt="Hidden Cup 3 logo"/></p>
-        <p>Welcome to the Hidden Cup 3 Player guessing competition results!</p>
+        <p class="text-center"><img src="../img/logo.png" alt="Hidden Cup 4 logo"/></p>
+        <p>Welcome to the Hidden Cup 4 Player guessing competition results!</p>
         <p>Enter your Twitch username <i>or</i> your email adress into the input below and hit the button to find out
             how you did!</p>
 
@@ -92,14 +92,14 @@
     async function getData(name) {
         const digest = await digestMessage(name.toLowerCase());
         console.log(digest);
-        const response = await fetch('https://hc3.aoe2.se/competition/guesses.php?id=' + digest);
+        const response = await fetch('https://hc4.aoe2.se/competition/guesses.php?id=' + digest);
         return await response.json();
     }
 
     function createResultsTable(data) {
         const resultDiv = document.getElementById('result');
 
-        if (data == '404') {
+        if (data === '404') {
             resultDiv.innerHTML = '<div class="alert alert-info" role="alert">We could not find your guess. Maybe you have a typo?</div>';
             return;
         }

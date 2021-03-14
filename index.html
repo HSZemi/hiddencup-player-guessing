@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hidden Cup 3 – Player Guessing</title>
+    <title>Hidden Cup 4 – Player Guessing</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -11,84 +11,96 @@
     <link rel="stylesheet" href="css/style.css">
     <style>
 
-        body {
-            background-image: url("img/background.png");
-            background-repeat: no-repeat;
+        html {
+            background: url("img/background.png") no-repeat center center fixed;
             background-size: cover;
+        }
+
+        body {
             color: white;
-        }
-
-        .list-item {
-            border: 1px dotted #eee;
-            margin: 20px 0;
-            height: 40px;
-            font-size: 15px;
-            font-weight: 700;
-            list-style-type: none;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #333;
-        }
-
-        .list-item span {
-            padding: 2px 10px 0 10px;
-            background: #f2dede;
-            display: block;
-            width: 100%;
-            height: 40px;
-            z-index: 3;
-        }
-
-        #hero-area .list-item {
-            display: block;
-            width: 100%;
-            background-color: #d9edf7;
-        }
-
-        #hero-area .list-item {
-            padding: 2px 10px 0 10px;
-        }
-
-        .right .list-item,
-        .right .list-item.highlight.ui-droppable-disabled {
-            height: 40px;
-            cursor: inherit;
-            border: none;
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .right .list-item.dropped {
-            border: 0;
-        }
-
-        .right .list-item.highlight {
-            border: 1px dotted #3db2db;
-        }
-
-        .right .list-item span {
-            background: #d9edf7;
-            color: #337ab7;
-            height: 40px;
-            z-index: 2;
-        }
-
-        #hero-area .list-item,
-        #drop-area .list-item span {
-            border: 2px solid #3db2db;
-        }
-
-        .breadcrumb-item.active {
-            color: deepskyblue;
+            background: none;
         }
 
         .hidden {
             display: none;
         }
 
-        small a {
-            color: unset;
+        #hero-area,
+        #player-area {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .hero-box {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+        }
+
+        .player-box {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+            width: 254px;
+            min-height: 40px;
+            border: 2px dashed rgba(255,255,255,1);
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: row;
+            width: 250px;
+            min-height: 36px;
+        }
+
+        .wrapper.hero {
+            height: 40px;
+            background: url('img/ItemBG.jpg') no-repeat center center;
+        }
+
+        .wrapper.player {
+            height: 36px;
+            background: url('img/ItemBG2.jpg') no-repeat center center;
+        }
+
+        .image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .name {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        .image img {
+            height: 36px;
+        }
+
+        .player .image img {
+            padding-left: 12px;
+        }
+
+        .drop-target {
+            background-image: url('img/t90Who.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            min-height: 36px;
+        }
+
+        #player-area {
+            margin: 2rem 0;
         }
 
     </style>
@@ -96,38 +108,27 @@
 <body>
 <div class="container">
     <div id="step-1">
-        <p class="text-center"><img src="img/logo.png" alt="Hidden Cup 3 logo"/></p>
-        <p>Welcome to the Hidden Cup 3 Player guessing competition!</p>
+        <p class="text-center"><img src="img/logo.png" alt="Hidden Cup 4 logo"/></p>
+        <p>Welcome to the Hidden Cup 4 Player guessing competition!</p>
         <p>Here you can guess which hero was played by which participant. The persons with most correct guesses win!</p>
         <p>In order to determine the winners and contact them, we store your contact information and your answers. By
             participating in this guessing competition you consent with us storing this data. We will delete this data
             once all winners have been contacted or 2 months after submission, whichever is earlier.</p>
+        <p style="color: #ccc;">If you have special knowledge, that means if you are an admin for HC4 or a player in the top 16, you can
+            still participate, but you cannot win a prize.</p>
         <p class="text-center">
             <button class="btn btn-secondary btn-lg mb-5" onclick="step2()">I understand that. Next!</button>
         </p>
     </div>
 
     <div id="step-2" class="hidden">
-        <p class="mt-5">Please assign each <b>Player</b> from the right to a <b>Hero</b> on the left by dragging the <b>Player</b>
-            onto the spot next to the <b>Hero</b>.</p>
-        <p>Once you are done, click the <i>Confirm and Next</i> button at the bottom.</p>
-        <div class="row">
-            <div class="col-4">
-                <h3 class="text-center">Heroes</h3>
-                <ul id='hero-area' class="list-unstyled">
-                </ul>
-            </div>
-            <div class="col-4 right">
-                <h3 class="text-center">Players</h3>
-                <ul id='drop-area' class="list-unstyled">
-                </ul>
-            </div>
-            <div class="col-4">
-                <h3 class="text-center">↓ <i>Drag these</i> ↓</h3>
-                <ul class="list-unstyled" id="player-area">
-                </ul>
-            </div>
-        </div>
+        <p class="mt-5 text-center">Please assign each <b>Player</b> from the bottom to a <b>Hero</b> on the top by dragging the <b>Player</b>
+            onto the spot below the <b>Hero</b>.</p>
+        <p class="text-center">Once you are done, click the <i>Confirm and Next</i> button at the bottom.</p>
+
+        <div id="hero-area"></div>
+        <div id="player-area"></div>
+
         <p class="text-center">
             <button class="btn btn-primary btn-lg mb-5" onclick="step3()">Confirm and Next</button>
         </p>
@@ -156,7 +157,7 @@
         </p>
     </div>
     <div id="step-4" class="hidden">
-        <p class="text-center"><img src="img/logo.png" alt="Hidden Cup 3 logo"/></p>
+        <p class="text-center"><img src="img/logo.png" alt="Hidden Cup 4 logo"/></p>
         <p id="response" class="lead text-center mt-5"></p>
     </div>
 </div>
@@ -166,45 +167,45 @@
 <script src="js/jquery.ui.touch-punch.js"></script>
 <script>
     const heroes = [
-        "Charlemagne",
-        "King Sancho",
-        "Joan The Maid",
-        "Bad Neighbor",
-        "Leif Erikson",
-        "Princess Yodit",
-        "Kotyan Khan",
-        "Sheriff of Nottingham",
-        "Saladin",
-        "Friar Tuck",
-        "Alaric The Goth",
-        "Vlad Dracula",
-        "Henry The Lion",
-        "William The Conqueror",
-        "Charles Martel",
-        "Emperor in a Barrel",
+        "Warwolf",
+        "Jacqueline of Hainaut",
+        "Admiral Yi Sun-Shin",
+        "Master of the Templar",
+        "Harald Hardraade",
+        "Sundjata",
+        "Pope Leo I",
+        "Gonzalo Pizarro",
+        "King Bela IV",
+        "Ivaylo",
+        "Cobra Car",
+        "Edward Longshanks",
+        "Le Loi",
+        "John the Fearless",
+        "Philip the Good",
+        "Little John",
     ];
     const players = [
-        "Hera",
-        "Liereyy",
-        "MbL",
-        "TaToH",
-        "TheMax",
-        "TheViper",
-        "Vivi",
-        "Yo",
-        "ACCM",
-        "Antagonist",
-        "BacT",
         "DauT",
         "dogao",
-        "F1Re",
+        "Hera",
+        "Liereyy",
+        "MbL40C",
+        "Mr_Yo",
+        "TaToH",
+        "TheViper",
+        "ACCM",
+        "BacT",
+        "Barles",
+        "JorDan",
         "Nicov",
         "Villese",
+        "Vinchester",
+        "Vivi",
     ];
 
     async function postData(data = {}) {
         // Default options are marked with *
-        const response = await fetch('https://hc3.aoe2.se/competition/guess.php', {
+        const response = await fetch('https://hc4.aoe2.se/competition/guess.php', {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -226,14 +227,32 @@
 
         for (let hero of heroes) {
             const hero_filename = hero.replace(/ /g, '_');
-            $('#hero-area').append(`<li class="list-item"><img src="img/${hero_filename}.png" alt="${hero}"/> ${hero}</li>`);
-            $('#drop-area').append(`<li class="list-item droppable"></li>`);
+            $('#hero-area').append(`<div class="hero-box">
+<div class="wrapper hero">
+<div class="image">
+<img src="img/hero/${hero_filename}.png" alt="${hero}"/>
+</div>
+<div class="name">
+<span>${hero}</span>
+</div>
+</div>
+<div class="drop-target"></div>
+</div>`);
         }
         for (let player of players) {
-            $('#player-area').append(`<li class="list-item"><span class="draggable"><img src="img/${player}.png" alt="${player}"/>&nbsp;${player}</span></li>`);
+            $('#player-area').append(`<div class="player-box">
+<div class="wrapper player draggable" data-player-name="${player}">
+<div class="image">
+<img src="img/player/${player}.svg" alt="${player}"/>
+</div>
+<div class="name">
+<span>${player}</span>
+</div>
+</div>
+</div>`);
         }
 
-        $('ul .draggable').draggable({
+        $('.draggable').draggable({
             revert: 'invalid',
             revertDuration: 200,
             start: function () {
@@ -245,12 +264,12 @@
             }
         });
 
-        $('ul#drop-area li').droppable({
+        $('.hero-box').droppable({
             hoverClass: 'highlight',
             drop: function (event, ui) {
                 const draggable = $(ui.draggable[0]),
                     draggableOffset = draggable.offset(),
-                    container = $(event.target),
+                    container = $(event.target).find('.drop-target'),
                     containerOffset = container.offset();
 
                 $('.draggable', event.target).appendTo(droppableParent).css({opacity: 0}).animate({opacity: 1}, 200);
@@ -265,8 +284,8 @@
 
     function collectPlayersInOrder() {
         const players = [];
-        $('#drop-area li span img').each((index, value) => {
-            players.push(value.alt);
+        $('#hero-area .drop-target .player').each((index, value) => {
+            players.push(value.dataset.playerName);
         });
         return players;
     }
@@ -282,7 +301,6 @@
             const hero = heroes[i];
             result[hero] = players[i];
         }
-        console.log(result);
 
         const emailAddress = $('#inputEmail').val();
         const twitchUsername = $('#inputTwitch').val();
@@ -299,7 +317,6 @@
 
         postData({emailAddress, twitchUsername, guess: result})
             .then((data) => {
-                console.log(data);
                 if (data.success) {
                     $('#response').html(data.message);
                     step4();
