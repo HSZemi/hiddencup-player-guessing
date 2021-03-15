@@ -374,8 +374,12 @@
         });
 
         $('select').change(function () {
-            const value = $(this).val();
-            $(`select option[value=${value}]`).attr('disabled', 'disabled');
+            $(`select option`).attr('disabled', false);
+            for (let element of $('select')) {
+                if (element.value !== 'none') {
+                    $(`select option[value=${element.value}]`).attr('disabled', 'disabled');
+                }
+            }
         });
 
     });
