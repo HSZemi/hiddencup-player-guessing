@@ -413,7 +413,7 @@
             return;
         }
 
-        if (!emailAddress.includes('@')) {
+        if (emailAddress !== '' && !emailAddress.includes('@')) {
             alert('That does not look like a valid email address. Check for typos or try another one.');
             return;
         }
