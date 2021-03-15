@@ -465,6 +465,7 @@
 
     const reset = () => {
         $('select').val('none');
+        $('option').attr('disabled', false);
         $('.player').each((index, value) => {
             console.log(index, value);
             const playerName = value.dataset.playerName;
