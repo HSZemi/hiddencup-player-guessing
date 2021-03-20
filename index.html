@@ -273,23 +273,35 @@
         "Little John",
     ];
     const players = [
-        "DauT",
-        "dogao",
-        "Hera",
-        "Liereyy",
-        "MbL40C",
-        "Mr_Yo",
-        "TaToH",
-        "TheViper",
         "ACCM",
         "BacT",
         "Barles",
+        "DauT",
+        "dogao",
+        "Hera",
         "JorDan",
+        "Liereyy",
+        "MbL40C",
+        "Mr_Yo",
         "Nicov",
+        "TaToH",
+        "TheViper",
         "Villese",
         "Vinchester",
         "Vivi",
     ];
+
+    
+    function shuffledArray(input) {
+        const array = input.slice();
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+        return array;
+    }
 
     async function postData(data = {}) {
         // Default options are marked with *
@@ -336,7 +348,7 @@
 <div class="drop-target">${getSelect()}</div>
 </div>`);
         }
-        for (let player of players) {
+        for (let player of shuffledArray(players)) {
             $('#player-area').append(`<div class="player-box" data-original-player="${player}">
 <div class="wrapper player draggable" data-player-name="${player}">
 <div class="image">
