@@ -101,8 +101,7 @@
 
     function createResultsTable(data) {
         const resultDiv = document.getElementById('result');
-
-        if (data === '404') {
+        if (data.toString() === '404') {
             resultDiv.innerHTML = '<div class="alert alert-info" role="alert">We could not find your guess. Maybe you have a typo?</div>';
             return;
         }
