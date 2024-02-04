@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hidden Cup 4 – Player Guessing</title>
+    <title>Hidden Cup 5 – Player Guessing</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -12,7 +12,8 @@
     <style>
 
         html {
-            background: url("img/background.png") no-repeat center center fixed;
+            min-height: 100%;
+            background: radial-gradient(circle at center, #2369A8 0, #323D4B 100%);
             background-size: cover;
         }
 
@@ -47,15 +48,15 @@
             display: flex;
             flex-direction: column;
             margin-bottom: 1rem;
-            width: 254px;
-            min-height: 40px;
-            border: 2px dashed rgba(255,255,255,1);
+            width: 248px;
+            min-height: 48px;
+            border: 2px dashed rgba(255,255,255,.2);
         }
 
         .wrapper {
             display: flex;
             flex-direction: row;
-            width: 250px;
+            width: 244px;
             min-height: 36px;
             user-select: none; /* supported by Chrome and Opera */
             -webkit-user-select: none; /* Safari */
@@ -65,19 +66,20 @@
         }
 
         .wrapper.hero {
-            height: 40px;
-            background: url('img/ItemBG.jpg') no-repeat center center;
+            height: 56px;
+            background: url('img/HeroBracket.png') no-repeat center center;
         }
 
         .wrapper.player {
-            height: 36px;
-            background: url('img/ItemBG2.jpg') no-repeat center center;
+            height: 44px;
+            background: url('img/HeroBracketSelected.png') no-repeat center center;
         }
 
         .image {
             display: flex;
             justify-content: center;
             align-items: center;
+            padding-left: 4px;
         }
 
         .name {
@@ -93,11 +95,15 @@
         }
 
         .image img {
-            height: 36px;
+            height: 48px;
+        }
+
+        .player .image {
+            width: 49px;
         }
 
         .player .image img {
-            padding-left: 12px;
+            padding-left: 3px;
         }
 
         .drop-target {
@@ -105,7 +111,7 @@
             background-position: center;
             background-repeat: no-repeat;
             background-size: contain;
-            min-height: 36px;
+            min-height: 44px;
         }
 
         #player-area {
@@ -131,7 +137,7 @@
             font-family: sans-serif;
             font-weight: 700;
             color: #444;
-            line-height: 1.3;
+            line-height: 1.5;
             padding: .6em 1.4em .5em .8em;
             width: 100%;
             max-width: 100%;
@@ -181,15 +187,14 @@
 <body>
 <div class="container">
     <div id="step-1">
-        <p class="text-center"><img src="img/logo.png" alt="Hidden Cup 4 logo"/></p>
-        <p>Welcome to the Hidden Cup 4 Player guessing competition!</p>
-        <p>Here you can guess which hero was played by which participant. The persons with most correct guesses win!</p>
-        <p>In order to determine the winners and contact them, we store your contact information and your answers. By
-            participating in this guessing competition you consent with us storing this data. We will delete this data
-            once all winners have been contacted or 2 months after submission, whichever is earlier.</p>
-        <p style="color: #ccc;">If you have special knowledge, that means if you are an admin for HC4 or a player in the
-            top 16, you can
-            still participate, but you cannot win a prize.</p>
+        <p class="text-center"><img src="img/logo.png" alt="Hidden Cup 5 logo"/></p>
+        <p class="lead">Welcome to the Hidden Cup 5 Player guessing competition!</p>
+        <p>Here you can guess which hero was played by which participant.
+           All guesses will be published on a scoreboard when the competition is over.
+           The persons with most correct guesses win!</p>
+        <p>There is no prize. But you may get the right to brag about being at the top of the scoreboard.</p>
+        <p style="color: #ccc;">If you have special knowledge, that means if you are an admin for HC5 or a player in the
+            top 16, you can still participate, but correct guesses will be a lot less impressive.</p>
         <p class="text-center">
             <button class="btn btn-secondary btn-lg mb-5" onclick="step2()">I understand that. Next!</button>
         </p>
@@ -197,7 +202,7 @@
 
     <div id="step-2" class="hidden">
         <p class="text-center"><img src="img/logo.png" alt="Hidden Cup 4 logo"/></p>
-        <p class="text-center">How do you want to assign players to heroes?</p>
+        <p class="text-center lead">How do you want to assign players to heroes?</p>
         <p class="text-center">
             <button class="btn btn-secondary btn-lg btn-block mb-4" onclick="step3desktop()">Desktop Version (drag &amp; drop)</button>
             <button class="btn btn-secondary btn-lg btn-block" onclick="step3mobile()">Mobile Version (select drop-down)</button>
@@ -223,20 +228,12 @@
     </div>
 
     <div id="step-4" class="hidden">
-        <p class="mt-5">In order to contact you in case you won, we need your contact information.</p>
-        <p>Please provide your email address or your Twitch username, or both – the more, the better we can
-            reach you.</p>
+        <p class="mt-5 lead">How would you like to appear on the leaderboard?</p>
 
         <div class="form-group">
-            <label for="inputEmail">Email address</label>
-            <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div>
-
-        <div class="form-group">
-            <label for="inputTwitch">Twitch username</label>
-            <input type="text" class="form-control" id="inputTwitch" aria-describedby="twitchHelp">
-            <small id="twitchHelp" class="form-text text-muted">The username you use on Twitch</small>
+            <label for="inputUsername">Username</label>
+            <input type="text" class="form-control" id="inputUsername" aria-describedby="twitchHelp">
+            <small id="twitchHelp" class="form-text text-muted">For example the username you use on Twitch or Discord</small>
         </div>
 
         <p class="text-center">
@@ -245,7 +242,7 @@
         </p>
     </div>
     <div id="step-5" class="hidden">
-        <p class="text-center"><img src="img/logo.png" alt="Hidden Cup 4 logo"/></p>
+        <p class="text-center"><img src="img/logo.png" alt="Hidden Cup 5 logo"/></p>
         <p id="response" class="lead text-center mt-5"></p>
     </div>
 </div>
@@ -305,7 +302,7 @@
 
     async function postData(data = {}) {
         // Default options are marked with *
-        const response = await fetch('https://hc4.aoe2.se/competition/guess.php', {
+        const response = await fetch('https://hc5.aoe2.se/competition/guess.php', {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -426,20 +423,14 @@
             result[hero] = players[i];
         }
 
-        const emailAddress = $('#inputEmail').val();
-        const twitchUsername = $('#inputTwitch').val();
+        const username = $('#inputUsername').val();
 
-        if (emailAddress === '' && twitchUsername === '') {
-            alert('Please provide at least your email address or your Twitch username!');
+        if (username === '') {
+            alert('Please provide a username!');
             return;
         }
 
-        if (emailAddress !== '' && !emailAddress.includes('@')) {
-            alert('That does not look like a valid email address. Check for typos or try another one.');
-            return;
-        }
-
-        postData({emailAddress, twitchUsername, guess: result})
+        postData({username, guess: result})
             .then((data) => {
                 if (data.success) {
                     $('#response').html(data.message);
