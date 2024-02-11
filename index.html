@@ -252,40 +252,40 @@
 <script src="js/jquery.ui.touch-punch.js"></script>
 <script>
     const heroes = [
-        "Warwolf",
-        "Jacqueline of Hainaut",
-        "Admiral Yi Sun-Shin",
-        "Master of the Templar",
-        "Harald Hardraade",
-        "Sundjata",
-        "Pope Leo I",
-        "Gonzalo Pizarro",
-        "King Bela IV",
-        "Ivaylo",
-        "Cobra Car",
-        "Edward Longshanks",
-        "Le Loi",
-        "John the Fearless",
-        "Philip the Good",
-        "Little John",
+        "Otto the Great",
+        "Khosrau",
+        "Vasco da Gama",
+        "Alexios Komnenos",
+        "Gajah Mada",
+        "Pachacuti",
+        "Jadwiga",
+        "King Stephen",
+        "Gregory VII",
+        "Jean Bureau",
+        "Jan Zizka",
+        "Selim the Grim",
+        "Sumanguru",
+        "Robert Guiscard",
+        "Emperor Sigismund",
+        "Alfred the Alpaca",
     ];
     const players = [
         "ACCM",
-        "BacT",
-        "Barles",
         "DauT",
-        "dogao",
         "Hera",
-        "JorDan",
+        "JorDan_AoE",
         "Liereyy",
-        "MbL40C",
         "Mr_Yo",
-        "Nicov",
-        "TaToH",
         "TheViper",
-        "Villese",
+        "TaToH",
         "Vinchester",
-        "Vivi",
+        "Barles",
+        "MbL",
+        "Sitaux",
+        "Sebastian2002",
+        "Hearttt",
+        "Mihai06",
+        "Ganji",
     ];
 
     
@@ -332,7 +332,7 @@
         let droppableParent;
 
         for (let hero of heroes) {
-            const hero_filename = hero.replace(/ /g, '_');
+            const hero_filename = hero.split(" ")[0].toLowerCase();
             $('#hero-area').append(`<div class="hero-box">
 <div class="wrapper hero">
 <div class="image">
