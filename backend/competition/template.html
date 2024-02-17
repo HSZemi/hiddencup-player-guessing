@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Results | Hidden Cup 5 – Player Guessing</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+
+        html {
+            background: radial-gradient(circle at center, #2369A8 0, #323D4B 100%);
+            background-size: cover;
+        }
+
+        body {
+            color: white;
+            background: none;
+        }
+
+        h2 small {
+            font-size: 60%;
+        }
+
+        small {
+            color: #ddd;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .table {
+            color: #eee;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <p class="text-center"><img src="img/logo.png" alt="Hidden Cup 5 logo"/></p>
+    <h1>Player Guessing Results</h1>
+
+    <h2>Correctly Guessed Players <small>Most And Least Often</small></h2>
+
+    {%correctly_guessed_players%}
+
+    <h2>All Guesses <small>Sorted By Number Of Correct Guesses</small></h2>
+
+    {%all_guesses_table%}
+
+</div>
+</body>
+</html>
