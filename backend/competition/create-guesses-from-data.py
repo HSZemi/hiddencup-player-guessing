@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 import html
-from collections import namedtuple
+from collections import namedtuple, defaultdict
 from pathlib import Path
 import json
 import hashlib
@@ -64,29 +64,30 @@ CORRECT = {
 
 CORRECT_INV = {player: hero for hero, player in CORRECT.items()}
 
-AG_TABLE_HEAD = '''    <table class="table table-sm">
-        <thead>
-        <tr>
-            <th>Correct Guesses</th>
-            <th>Name</th>
-            <th>Guesses</th>
-        </tr>
-        </thead>
-        <tbody>
+AG_TABLE_HEAD = '''<table class="table table-sm">
+<thead>
+<tr>
+<th>Correct Guesses</th>
+<th>Name</th>
+<th>Guesses</th>
+</tr>
+</thead>
+<tbody>
 '''
 
-TABLE_FOOT = '''        </tbody>
-    </table>
+TABLE_FOOT = '''</tbody>
+</table>
 '''
 
-CGP_TABLE_HEAD = '''    <table class="table table-sm">
-        <thead>
-        <tr>
-            <th>Player</th>
-            <th colspan="2">Correct Guesses</th>
-        </tr>
-        </thead>
-        <tbody>
+CGP_TABLE_HEAD = '''<table class="table table-sm">
+<thead>
+<tr>
+<th>Player</th>
+<th>Hero</th>
+<th colspan="2">Correct Guesses</th>
+</tr>
+</thead>
+<tbody>
 '''
 
 
@@ -121,32 +122,64 @@ PlayerGuesses = namedtuple('PlayerGuesses', ['player', 'correct_guesses'])
 
 
 def guess_row(guess: Guess) -> str:
-    row = f'''    <tr>
-            <td>{guess.correct_guesses()} / 16</td>
-            <td>{html.escape(guess.username)}</td>
-            <td>
-                <details>
-                    <summary>Detailed Guesses</summary>
-                    <dl>
+    row = f'''<tr>
+<td>{guess.correct_guesses()} / 16</td>
+<td>{html.escape(guess.username)}</td>
+<td>
+<details>
+<summary>Detailed Guesses</summary>
+<dl>
 '''
     for hero in HEROES:
-        emoji = '✅' if guess.correctly_guessed_player_for_hero(hero) else '❎'
+        emoji = '✅' if guess.correctly_guessed_player_for_hero(hero) else '❌'
         remark = '' if guess.correctly_guessed_player_for_hero(hero) else f' <small><i>correct: {CORRECT[hero]}</i></small>'
-        row += f'''                        <dt>{hero}</dt>
-                        <dd>{emoji} {guess.guess[hero]}{remark}</dd>
+        row += f'''<dt>{hero}</dt>
+<dd>{emoji} {guess.guess[hero]}{remark}</dd>
 '''
-    row += '''                    </dl>
-                </details>
-            </td>
-        </tr>
+    row += '''</dl>
+</details>
+</td>
+</tr>
 '''
     return row
 
 
-def player_row(player_guesses: PlayerGuesses, count: int) -> str:
+def player_guess_details(player_guesses: PlayerGuesses, guess_counts: dict) -> str:
+    details = f'<details><summary>{player_guesses.player}</summary><ul class="list-unstyled">'
+    stats = []
+    for hero in HEROES:
+        key = (hero, player_guesses.player)
+        count = guess_counts[key]
+        stats.append((count, hero))
+    for count, hero in sorted(stats, reverse=True):
+        emoji = '✅' if hero == CORRECT_INV[player_guesses.player] else '❌'
+        details += f'<li>{emoji} {hero}: {count}</li>'
+    details += '</ul></details>'
+    return details
+
+
+def hero_guess_details(player_guesses: PlayerGuesses, guess_counts: dict) -> str:
+    hero = CORRECT_INV[player_guesses.player]
+    details = f'<details><summary>{hero}</summary><ul class="list-unstyled">'
+    stats = []
+    for player in PLAYERS:
+        key = (hero, player)
+        count = guess_counts[key]
+        stats.append((count, player))
+    for count, player in sorted(stats, reverse=True):
+        emoji = '✅' if player == CORRECT[hero] else '❌'
+        details += f'<li>{emoji} {player}: {count}</li>'
+    details += '</ul></details>'
+    return details
+
+
+def player_row(player_guesses: PlayerGuesses, count: int, guess_counts: dict) -> str:
     percentage = player_guesses.correct_guesses / count
+    player_details = player_guess_details(player_guesses, guess_counts)
+    hero_details = hero_guess_details(player_guesses, guess_counts)
     return f'''        <tr>
-            <td>{player_guesses.player}</td>
+            <td>{player_details}</td>
+            <td>{hero_details}</td>
             <td>{percentage:.2f} %</td>
             <td>{player_guesses.correct_guesses} / {count}</td>
         </tr>
@@ -171,7 +204,12 @@ def main():
         guessed_players.append(PlayerGuesses(player, correct_guesses))
     guessed_players = sorted(guessed_players, key=lambda gp: gp.correct_guesses, reverse=True)
 
-    correctly_guessed_players = CGP_TABLE_HEAD + ''.join([player_row(gp, count) for gp in guessed_players]) + TABLE_FOOT
+    guess_counts = defaultdict(lambda: 0)
+    for guess in guesses:
+        for hero in HEROES:
+            guess_counts[(hero, guess.guess[hero])] += 1
+
+    correctly_guessed_players = CGP_TABLE_HEAD + ''.join([player_row(gp, count, guess_counts) for gp in guessed_players]) + TABLE_FOOT
     all_guesses_table = AG_TABLE_HEAD + ''.join([guess_row(guess) for guess in guesses]) + TABLE_FOOT
 
     template_file = Path(__file__).with_name('template.html')
